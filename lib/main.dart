@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geo_analyzer_app/cubit/create_user_cubit.dart';
+import 'package:geo_analyzer_app/cubit/send_location_cubit.dart';
 import 'package:geo_analyzer_app/injection_container.dart';
 import 'package:geo_analyzer_app/pages/user.dart';
 
@@ -65,6 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return MultiBlocProvider(
         providers: [
           BlocProvider<CreateUserCubit>(create: (context) => sl()),
+          BlocProvider<SendLocationCubit>(create: (context) => sl()),
         ],
         child: const MaterialApp(
           home: UserScreen(),

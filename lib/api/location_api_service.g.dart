@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'user_api_service.dart';
+part of 'location_api_service.dart';
 
 // **************************************************************************
 // RetrofitGenerator
@@ -8,8 +8,8 @@ part of 'user_api_service.dart';
 
 // ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers,unused_element
 
-class _UserApiService implements UserApiService {
-  _UserApiService(
+class _LocationApiService implements LocationApiService {
+  _LocationApiService(
     this._dio, {
     this.baseUrl,
     this.errorLogger,
@@ -22,33 +22,34 @@ class _UserApiService implements UserApiService {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<HttpResponse<UserInfoOutputEntity>> createUser(
-      UserInfoInputEntity input) async {
+  Future<HttpResponse<DeviceLocationOutputEntity>> sendLocation(
+      DeviceLocationInputEntity input) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(input.toJson());
-    final _options = _setStreamType<HttpResponse<UserInfoOutputEntity>>(Options(
+    final _options =
+        _setStreamType<HttpResponse<DeviceLocationOutputEntity>>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
     )
-        .compose(
-          _dio.options,
-          '/user',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        )));
+            .compose(
+              _dio.options,
+              '/location',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            )));
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late UserInfoOutputEntity _value;
+    late DeviceLocationOutputEntity _value;
     try {
-      _value = UserInfoOutputEntity.fromJson(_result.data!);
+      _value = DeviceLocationOutputEntity.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
