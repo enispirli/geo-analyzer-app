@@ -68,13 +68,13 @@ class _UserScreenState extends State<UserScreen> {
 
         return Scaffold(
           body: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 30),
+            padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 60),
             child: Column(
               children: [
                 TextField(
                   controller: _controller,
                   decoration: const InputDecoration(
-                    labelText: 'Enter info',
+                    labelText: 'Enter username ',
                   ),
                 ),
                 const SizedBox(height: 20),
