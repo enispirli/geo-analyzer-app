@@ -5,7 +5,7 @@ import 'package:geo_analyzer_app/cubit/create_user_state.dart';
 import 'package:geo_analyzer_app/data/device_info_model.dart';
 import 'package:geo_analyzer_app/data/input/user_info_input_entity.dart';
 import 'package:geo_analyzer_app/injection_container.dart';
-import 'package:geo_analyzer_app/service/user_service.dart';
+import 'package:geo_analyzer_app/pages/location.dart';
 import 'package:geo_analyzer_app/util/device_state_util.dart';
 
 class UserScreen extends StatefulWidget {
@@ -16,9 +16,15 @@ class UserScreen extends StatefulWidget {
 }
 
 class _UserScreenState extends State<UserScreen> {
-  final UserService userService = sl();
+  late final CreateUserCubit createUserCubit;
   final DeviceStateUtil deviceStateUtil = sl();
   final TextEditingController _controller = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    createUserCubit = context.read<CreateUserCubit>();
+  }
 
   Future<void> _saveUserAndDeviceInfo() async {
     DeviceInfoModel deviceInfoModel = await deviceStateUtil.getDeviceInfo();
@@ -27,23 +33,37 @@ class _UserScreenState extends State<UserScreen> {
         deviceName: deviceInfoModel.deviceModel,
         username: _controller.text);
 
-    userService.saveUserAndDeviceInfo(userInfoInputEntity);
+    createUserCubit.saveUserAndDeviceInfo(userInfoInputEntity);
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CreateUserCubit, CreateUserState>(
+    return BlocConsumer<CreateUserCubit, CreateUserState>(
       builder: (context, state) {
         if (state is CreateUserLoadingState) {
           return const CircularProgressIndicator();
         }
 
-        if (state is CreateUserSuccessState) {
-          // yeni bir sayfaya geçş yap
-        }
-
-        if (state is Error) {
-          // ekrana hata mesajı göster
+        if (state is CreateUserErrorState) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: const Text('Hata'),
+                  content: Text(state.errorMessage!),
+                  actions: <Widget>[
+                    TextButton(
+                      child: const Text('Tamam'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
+          });
         }
 
         return Scaffold(
@@ -66,6 +86,17 @@ class _UserScreenState extends State<UserScreen> {
             ),
           ),
         );
+      },
+      listener: (context, state) {
+        if (state is CreateUserSuccessState) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  LocationScreen(deviceId: state.userInfoOutputEntity.deviceId),
+            ),
+          );
+        }
       },
     );
   }

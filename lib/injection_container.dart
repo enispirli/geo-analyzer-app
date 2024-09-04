@@ -4,6 +4,7 @@ import 'package:geo_analyzer_app/api/user_api_service.dart';
 import 'package:geo_analyzer_app/constants/constants.dart';
 import 'package:geo_analyzer_app/cubit/create_user_cubit.dart';
 import 'package:geo_analyzer_app/cubit/send_location_cubit.dart';
+import 'package:geo_analyzer_app/service/geolocator_service.dart';
 import 'package:geo_analyzer_app/service/location_service.dart';
 import 'package:geo_analyzer_app/service/user_service.dart';
 import 'package:geo_analyzer_app/util/device_state_util.dart';
@@ -24,6 +25,7 @@ Future<void> initializeDependencies() async {
   sl.registerSingleton<SendLocationCubit>(SendLocationCubit(sl()));
 
   sl.registerSingleton<DeviceStateUtil>(DeviceStateUtil());
+  sl.registerSingleton<GeoLocatorService>(GeoLocatorService());
 }
 
 Dio createDio() {
